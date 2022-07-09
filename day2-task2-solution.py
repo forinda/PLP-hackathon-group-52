@@ -26,11 +26,13 @@ career_advices = ['With relation to the information provided,',
                   'you best qualify for', 'It is a very good and marketable career.']
 
 print()
-print('Welcome to the career advice program'.center(50, '-'))
+print(' Welcome to the career advice program '.center(50, '-'))
 print()
+
+
 def main():
     # Grades scored by the user
-    print(career_questions[0])
+    print(f" {career_questions[0].title()} \nUse grade values between A - E")
 
     # maths  input validation
     while True:
@@ -224,3 +226,7 @@ def main():
               career_options[0], career_advices[2])
     else:
         print('Thank you')
+
+
+if __name__ == '__main__':
+    main()
