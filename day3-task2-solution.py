@@ -55,10 +55,16 @@ class Nutrition(object):
         return calories_from_carbs
 
     def get_fat_input(self):
-        return int(input('Enter the number of fat grams: '))
+        try:
+            return int(input('Enter the number of fat grams: '))
+        except ValueError:
+            print("Value error")
 
     def get_carb_input(self):
-        return int(input('Enter the number of carb grams: '))
+        try:
+            return int(input('Enter the number of carb grams: '))
+        except ValueError:
+            print("Value error")
 
     def process(self):
         print(' Welcome to calories converter '.center(50, '*'))
