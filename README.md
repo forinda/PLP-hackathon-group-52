@@ -7,6 +7,9 @@ Members
 - King'ori Stephen
 - Felix Orinda
 
+## Overview
+For some of the OOP concepts we've added file logging of activities when exectuning the functions listed
+This is for the sense of tracking the application activities and knowing when an object method was called
 <pre>
 <code>
 3 Days of Python (Roadmap)
