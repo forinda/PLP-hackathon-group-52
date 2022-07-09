@@ -25,6 +25,9 @@ from time import sleep
 def logger_decorator(func):
     """Decorator for logging current executing function"""
     def wrapper(*args, **kwargs):
+        with open('door-lock-logs.log', '+a') as f:
+            f.writelines(
+                f"*Running {func.__name__} method -  on {datetime.now().strftime('%A %d. %B %Y %H:%M:%S')}\n")
         print('-' * 50)
         print("Running {} function".format(func.__name__))
         print("-" * 50)

@@ -14,11 +14,15 @@ the following data:
 """
 
 
+from datetime import datetime
 from time import sleep
 
 
 def logger_decorator(func):
     def wrapper(*args, **kwargs):
+        with open('painting-company-logs.log', '+a') as f:
+            f.writelines(
+                f"*Running {func.__name__} method - on {datetime.now().strftime('%A %d. %B %Y %H:%M:%S')}\n")
         print('-' * 50)
         print("Running {} function".format(func.__name__))
         print("-" * 50)

@@ -13,7 +13,20 @@ The nutritionist asks you to write a program that will make these calculations.
     """
 
 
+from datetime import datetime
 from time import sleep
+
+
+def logger_decorator(func):
+    """Decorator for logging current executing function"""
+    def wrapper(*args, **kwargs):
+        with open('nutrition-logs.log', '+a') as f:
+            f.writelines(
+                f"* Running {func.__name__} method -  on {datetime.now().strftime('%A %d %B %Y %H:%M:%S')}\n")
+        print("Running {} function".format(func.__name__))
+
+        return func(*args, **kwargs)
+    return wrapper
 
 
 class NutritionCommands:
@@ -46,26 +59,31 @@ class Nutrition(object):
     def carb_grams(self, value):
         self._carb_grams = value
 
+    @logger_decorator
     def calculate_calories_from_fat(self):
         calories_from_fat = self.fat_grams * self.FAT_PER_GRAM
         return calories_from_fat
 
+    @logger_decorator
     def calculate_calories_from_carbs(self):
         calories_from_carbs = self.carb_grams * self.CARBOHYDRATES_PER_GRAM
         return calories_from_carbs
 
+    @logger_decorator
     def get_fat_input(self):
         try:
             return int(input('Enter the number of fat grams: '))
         except ValueError:
             print("Value error")
 
+    @logger_decorator
     def get_carb_input(self):
         try:
             return int(input('Enter the number of carb grams: '))
         except ValueError:
             print("Value error")
 
+    @logger_decorator
     def process(self):
         print(' Welcome to calories converter '.center(50, '*'))
         command = ""
