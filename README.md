@@ -10,6 +10,8 @@ Members
 ## Overview
 For some of the OOP concepts we've added file logging of activities when exectuning the functions listed
 This is for the sense of tracking the application activities and knowing when an object method was called
+
+Time logging of function in comparing performance in function calls
 <pre>
 <code>
 3 Days of Python (Roadmap)
