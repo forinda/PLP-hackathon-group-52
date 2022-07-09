@@ -15,7 +15,7 @@ the following data:
 
 
 from datetime import datetime
-from time import sleep
+from time import sleep, time
 
 
 def logger_decorator(func):
@@ -30,6 +30,20 @@ def logger_decorator(func):
     return wrapper
 
 
+def timer(func):
+    # This function shows the execution time of
+    # the function object passed
+    def wrap_func(*args, **kwargs):
+        t1 = time()
+        result = func(*args, **kwargs)
+        t2 = time()
+        with open('bench-mark-logs.log', '+a') as f:
+            f.writelines(
+                f'*Function {func.__name__!r} executed in {(t2-t1):.4f}s\n')
+            return result
+    return wrap_func
+
+
 class PaintingCompany(object):
     UNIT_AREA_IN_FEET = 115
     HOURLY_FEE_RATE = 20
@@ -40,35 +54,41 @@ class PaintingCompany(object):
         self.unit_area = 0
 
     @property
+    @timer
     @logger_decorator
     def area_to_paint(self) -> float:
         # Area setter for the area to be painted
         return self._area_to_paint
 
     @area_to_paint.setter
+    @timer
     @logger_decorator
     def area_to_paint(self, value: float) -> None:
         # Area setter for the area to be painted
         self._area_to_paint = value
 
     @property
+    @timer
     @logger_decorator
     def gallon_price(self) -> float:
         # Getter for price of a gallon of paint
         return self._gallon_price
 
     @gallon_price.setter
+    @timer
     @logger_decorator
     def gallon_price(self, value: float) -> None:
         # Setter for price of one gallon of paint
         self._gallon_price = value
 
     @staticmethod
+    @timer
     @logger_decorator
     def utility_converter():
         # 115 sq ft ->  8hrs and $20 per hour labour
         pass
 
+    @timer
     @logger_decorator
     def get_user_input(self) -> None:
         # Get user input for area to be painted and price of a gallon of paint
@@ -82,6 +102,7 @@ class PaintingCompany(object):
             else \
             int(self.area_to_paint/self.UNIT_AREA_IN_FEET) + 1
 
+    @timer
     @logger_decorator
     def input_mapper(self) -> dict:
         try:
@@ -109,10 +130,12 @@ class PaintingCompany(object):
             "total_cost_of_the_paint_job": None
         }
 
+    @timer
     @logger_decorator
     def replace_chars(self, string: str) -> str:
         return string.title().replace("_", " ").replace("\"", "").replace("  ", " ").replace(":", " = ")
 
+    @timer
     @logger_decorator
     def run(self):
         number_of_gallons_of_paint_required, \

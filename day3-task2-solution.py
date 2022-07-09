@@ -14,7 +14,7 @@ The nutritionist asks you to write a program that will make these calculations.
 
 
 from datetime import datetime
-from time import sleep
+from time import sleep, time
 
 
 def logger_decorator(func):
@@ -27,6 +27,20 @@ def logger_decorator(func):
 
         return func(*args, **kwargs)
     return wrapper
+
+
+def timer(func):
+    # This function shows the execution time of
+    # the function object passed
+    def wrap_func(*args, **kwargs):
+        t1 = time()
+        result = func(*args, **kwargs)
+        t2 = time()
+        with open('bench-mark-logs.log', '+a') as f:
+            f.write(
+                f'*Function {func.__name__!r} executed in {(t2-t1):.4f}s\n')
+        return result
+    return wrap_func
 
 
 class NutritionCommands:
@@ -44,31 +58,38 @@ class Nutrition(object):
         self._carb_grams = 0
 
     @property
+    @timer
     def fat_grams(self):
         return self._fat_grams
 
     @fat_grams.setter
+    @timer
     def fat_grams(self, value):
         self._fat_grams = value
 
     @property
+    @timer
     def carb_grams(self):
         return self._carb_grams
 
     @carb_grams.setter
+    @timer
     def carb_grams(self, value):
         self._carb_grams = value
 
+    @timer
     @logger_decorator
     def calculate_calories_from_fat(self):
         calories_from_fat = self.fat_grams * self.FAT_PER_GRAM
         return calories_from_fat
 
+    @timer
     @logger_decorator
     def calculate_calories_from_carbs(self):
         calories_from_carbs = self.carb_grams * self.CARBOHYDRATES_PER_GRAM
         return calories_from_carbs
 
+    @timer
     @logger_decorator
     def get_fat_input(self):
         try:
@@ -76,6 +97,7 @@ class Nutrition(object):
         except ValueError:
             print("Value error")
 
+    @timer
     @logger_decorator
     def get_carb_input(self):
         try:
@@ -83,6 +105,7 @@ class Nutrition(object):
         except ValueError:
             print("Value error")
 
+    @timer
     @logger_decorator
     def process(self):
         print(' Welcome to calories converter '.center(50, '*'))

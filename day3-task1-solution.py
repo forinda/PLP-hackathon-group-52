@@ -19,7 +19,7 @@ displayed.
 """
 from datetime import datetime
 from getpass import getpass
-from time import sleep
+from time import sleep, time
 
 
 def logger_decorator(func):
@@ -33,6 +33,20 @@ def logger_decorator(func):
         print("-" * 50)
         return func(*args, **kwargs)
     return wrapper
+
+
+def timer(func):
+    # This function shows the execution time of
+    # the function object passed
+    def wrap_func(*args, **kwargs):
+        t1 = time()
+        result = func(*args, **kwargs)
+        t2 = time()
+        with open('bench-mark-logs.log', '+a') as f:
+            f.write(
+                f'*Function {func.__name__!r} executed in {(t2-t1):.4f}s\n')
+        return result
+    return wrap_func
 
 
 class DoorLock:
@@ -56,22 +70,27 @@ method setter i.e `lock.password="password"`
         return self._commands
 
     @property
+    @timer
     def running(self) -> bool:
         return self._running
 
     @running.setter
+    @timer
     def running(self, value: bool) -> None:
         self._running = value
 
     @property
+    @timer
     def locked(self) -> bool:
         return self._is_locked
 
     @locked.setter
+    @timer
     def locked(self, value: bool) -> None:
         self._is_locked = value
 
     @property
+    @timer
     def password(self) -> str:
         return self._password
 
@@ -87,17 +106,20 @@ method setter i.e `lock.password="password"`
     def password(self, value: str) -> None:
         self._password = value
 
+    @timer
     @logger_decorator
     def unlock_door(self):
         # Unlock locked door
         self.locked = False
 
+    @timer
     @logger_decorator
     def lock_door(self):
         # Lock unlocked door
         self.locked = True
 
     @staticmethod
+    @timer
     @logger_decorator
     def help():
         h = """
@@ -109,6 +131,7 @@ quit - Terminate program
         print(h)
 
     @staticmethod
+    @timer
     @logger_decorator
     def print_date() -> None:
         # print current date and time
@@ -159,6 +182,7 @@ This runs on an endless loop to execute user commands and produce the required o
                     print("The door is now locked")
 
     @staticmethod
+    @timer
     @logger_decorator
     def run():
         # Run method to execute and abstract the door simulation functionality
