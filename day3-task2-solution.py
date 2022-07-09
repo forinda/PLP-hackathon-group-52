@@ -13,6 +13,9 @@ The nutritionist asks you to write a program that will make these calculations.
     """
 
 
+from time import sleep
+
+
 class NutritionCommands:
     calories_from_fat = 'calories_from_fats'
     calories_from_carbs = 'calories_from_carbs'
@@ -66,7 +69,8 @@ class Nutrition(object):
             if command == '1':
                 self.fat_grams = self.get_fat_input()
                 print('*' * 50)
-                print('** Calories from fat  = ', self.calculate_calories_from_fat())
+                print('** Calories from fat  = ',
+                      self.calculate_calories_from_fat())
                 print('*' * 50)
                 continue
             elif command == '2':
@@ -88,4 +92,10 @@ if __name__ == '__main__':
     def main():
         nutrition = Nutrition()
         nutrition.process()
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\nCTRL + C closing terminal... in 2 seconds\n")
+        sleep(2)
+    except KeyError:
+        print("Key error.....")

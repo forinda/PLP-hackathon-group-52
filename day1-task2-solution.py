@@ -14,6 +14,9 @@ the following data:
 """
 
 
+from time import sleep
+
+
 def logger_decorator(func):
     def wrapper(*args, **kwargs):
         print('-' * 50)
@@ -130,4 +133,8 @@ if __name__ == "__main__":
             painting_company.run()
             if input("Do you want to continue? (y/n): ") == "n":
                 break
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\nCTRL+c closing terminal in 2seconds\n")
+        sleep(2)

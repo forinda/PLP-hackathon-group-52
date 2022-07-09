@@ -19,6 +19,17 @@ displayed.
 """
 from datetime import datetime
 from getpass import getpass
+from time import sleep
+
+
+def logger_decorator(func):
+    """Decorator for logging current executing function"""
+    def wrapper(*args, **kwargs):
+        print('-' * 50)
+        print("Running {} function".format(func.__name__))
+        print("-" * 50)
+        return func(*args, **kwargs)
+    return wrapper
 
 
 class DoorLock:
@@ -30,12 +41,11 @@ method setter i.e `lock.password="password"`
     """
 
     def __init__(self, password="1234") -> None:
-        # self._password= ''
         self._commands: dict = {"open": "open", "quit": "quit",
                                 "close": "close", "help": ["help", "--help", "-h"]}
         self._password: str = password
-        self._is_authenticated: bool = False
-        self._is_locked: bool = False
+        self._is_auth: bool = False
+        self._is_locked: bool = True
         self._running: bool = True
 
     @property
@@ -63,26 +73,29 @@ method setter i.e `lock.password="password"`
         return self._password
 
     @property
-    def authenticated(self) -> bool:
-        return self._is_authenticated
+    def auth(self) -> bool:
+        return self._is_auth
 
-    @authenticated.setter
-    def authenticated(self, value: bool) -> None:
-        self._is_authenticated = value
+    @auth.setter
+    def auth(self, value: bool) -> None:
+        self._is_auth = value
 
     @password.setter
     def password(self, value: str) -> None:
         self._password = value
 
+    @logger_decorator
     def unlock_door(self):
-        """Unlock locked door"""
+        # Unlock locked door
         self.locked = False
 
+    @logger_decorator
     def lock_door(self):
-        """Lock unlocked door"""
+        # Lock unlocked door
         self.locked = True
 
     @staticmethod
+    @logger_decorator
     def help():
         h = """
 For help commands use:
@@ -93,10 +106,12 @@ quit - Terminate program
         print(h)
 
     @staticmethod
+    @logger_decorator
     def print_date() -> None:
-        """print current """
+        # print current date and time
         return datetime.now()
 
+    @logger_decorator
     def main(self):
         """
 Main function that executes the logic for opening the door and closing the door
@@ -105,13 +120,14 @@ This runs on an endless loop to execute user commands and produce the required o
         """
         print(""" Welcome to automated door locking system """.center(80, "*"))
         while self.running:
-            while not self.authenticated:
-                password = getpass("Enter your password to continue: ")
+            while not self.auth:
+                password = getpass(
+                    "Enter your password to continue hint: \nUse password used for class object instantiation: ")
                 if not password == self.password:
                     print("Invalid password please try again..")
                     continue
                 else:
-                    self.authenticated = True
+                    self.auth = True
             commands = self.commands.values()
             msg = "[enter command]> "
             user_command = input(msg).lower().strip()
@@ -140,9 +156,19 @@ This runs on an endless loop to execute user commands and produce the required o
                     print("The door is now locked")
 
     @staticmethod
+    @logger_decorator
     def run():
-        door_lock = DoorLock("12345")
-        door_lock.main()
+        # Run method to execute and abstract the door simulation functionality
+        # The password passed to the constructor is the default during object
+        # instantiation or it can be overriden by an accessor
+        try:
+            door_lock = DoorLock("12345")
+            door_lock.main()
+        except KeyboardInterrupt:
+            print("\n\nCTRL + C closing terminal... in 2 seconds\n")
+            sleep(2)
+        except KeyError:
+            print("Key error.....")
 
 
 if __name__ == "__main__":
