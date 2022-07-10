@@ -185,9 +185,9 @@ This runs on an endless loop to execute user commands and produce the required o
     @timer
     @logger_decorator
     def run():
-        # Run method to execute and abstract the door simulation functionality
-        # The password passed to the constructor is the default during object
-        # instantiation or it can be overriden by an accessor
+        """Run method to execute and abstract the door simulation functionality
+         The password passed to the constructor is the default during object
+         instantiation or it can be overriden by an accessor"""
         try:
             door_lock = DoorLock("12345")
             door_lock.main()
