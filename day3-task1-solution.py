@@ -148,7 +148,7 @@ This runs on an endless loop to execute user commands and produce the required o
         while self.running:
             while not self.auth:
                 password = getpass(
-                    "Enter your password to continue hint: \nUse password used for class object instantiation: ")
+                    "Take note that password input is hidden\nEnter your password to continue hint: \nUse password used for class object instantiation: ")
                 if not password == self.password:
                     print("Invalid password please try again..")
                     continue
