@@ -12,6 +12,8 @@ For some of the OOP concepts we've added file logging of activities when exectun
 This is for the sense of tracking the application activities and knowing when an object method was called
 
 Time logging of function in comparing performance in function calls
+
+The default `constructor` password is `1234` while current instantiation password is `12345`
 <pre>
 <code>
 3 Days of Python (Roadmap)
